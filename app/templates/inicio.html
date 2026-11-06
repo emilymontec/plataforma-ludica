@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+<main class="contenedor">
+  <header class="encabezado">
+    <div class="logo" aria-hidden="true">★</div>
+    <h1>Plataforma lúdica de cursos para niños</h1>
+    <p class="subtitulo">Prototipo en construcción</p>
+  </header>
+
+  <section class="tarjeta">
+    <dl class="datos">
+      <div><dt>Aprendiz</dt><dd>{{ aprendiz }}</dd></div>
+      <div><dt>Curso</dt><dd>{{ curso }}</dd></div>
+      <div><dt>Mecánica</dt><dd>{{ mecanica }}</dd></div>
+    </dl>
+  </section>
+
+  <nav class="enlaces">
+    <a class="boton boton-principal" href="/docs">Documentación de la API</a>
+    <a class="boton" href="/salud">Estado del servicio</a>
+  </nav>
+
+  <section class="instalar">
+    <button id="boton-instalar" class="boton boton-instalar" hidden>Instalar la aplicación</button>
+    <p id="ayuda-ios" class="ayuda" hidden>
+      En iPhone: toque <strong>Compartir</strong> y luego <strong>Agregar a inicio</strong>.
+    </p>
+  </section>
+
+  <footer class="pie">Versión {{ version }}</footer>
+</main>
+{% endblock %}

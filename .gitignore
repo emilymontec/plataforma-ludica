@@ -1,0 +1,23 @@
+# Entorno virtual y cachés
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Secretos: nunca se suben al repositorio
+.env
+
+# Bases de datos locales
+*.db
+*.sqlite
+*.sqlite3
+
+# PDF de entrega: se sube al Drive, no al repositorio
+entregas/*.pdf
+
+# Archivos del sistema y del editor
+.DS_Store
+Thumbs.db
+.idea/
