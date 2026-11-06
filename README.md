@@ -32,15 +32,27 @@ ruff check .
 
 | Carpeta o archivo | Contenido |
 | --- | --- |
-| `app/` | Aplicación FastAPI: rutas, servicios, modelos, plantillas y archivos estáticos |
+| `app/` | Aplicación FastAPI |
+| `app/main.py` | Crea la aplicación, publica los archivos estáticos y registra las rutas |
 | `app/proyecto.py` | Datos de identificación del proyecto |
-| `tests/` | Pruebas automatizadas |
-| `specs/` | Especificación, flujo de usuario, plan técnico, tareas y decisiones |
-| `prompts/` | Prompts versionados |
-| `entregas/` | Respuestas semanales; `entregar.py` genera el PDF |
-| `AGENTS.md` | Contexto del proyecto para los agentes de IA |
-| `STATE.md` | Estado, decisiones y siguiente paso |
+| `app/rutas/` | Rutas HTML y API: página de inicio, estado del servicio y datos del proyecto |
+| `app/servicios/` | Paquete reservado para la lógica de negocio; todavía no contiene servicios |
+| `app/modelos/` | Paquete reservado para los modelos SQLModel; todavía no contiene modelos |
+| `app/templates/` | Plantillas Jinja2 para la página de inicio y la estructura HTML común |
+| `app/static/` | Estilos, JavaScript, manifiesto, service worker e iconos de la PWA |
+| `tests/` | Pruebas automatizadas; `aceptacion/` está reservado para pruebas de aceptación |
+| `specs/` | Especificación, plan técnico, tareas y flujo de usuario |
+| `specs/adr/` | Plantilla para registrar decisiones de arquitectura |
+| `prompts/` | Instrucciones para guardar prompts; actualmente solo contiene su README |
+| `entregas/` | Plantilla para las respuestas semanales; `entregar.py` genera el PDF de una semana |
+| `.github/workflows/ci.yml` | Ejecuta Ruff, las pruebas y una comprobación de inicio en GitHub Actions |
+| `AGENTS.md` | Contexto y convenciones del proyecto para los agentes de IA |
+| `STATE.md` | Estado actual, decisiones y siguiente paso |
+| `POLITICA_IA.md` | Política para el uso de herramientas de IA |
+| `pyproject.toml` | Configuración de pytest y Ruff |
+| `requirements.txt` / `requirements-dev.txt` | Dependencias de ejecución y desarrollo |
 | `render.yaml` | Configuración del despliegue en Render |
+| `.env.example` | Ejemplo de variables de entorno; no contiene valores secretos |
 
 ## Licencia
 
