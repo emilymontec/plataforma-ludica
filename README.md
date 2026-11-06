@@ -2,9 +2,9 @@
 
 Prototipo de una plataforma web lúdica de cursos para niños, desarrollado con FastAPI.
 
-- **Aprendiz:** Nombre Apellido
-- **Curso y mecánica:** (complete)
-- **Aplicación publicada:** (complete con la URL de Render)
+- **Aprendiz:** Emily Monterrosa
+- **Curso y mecánica:** Geografía de Colombia (mecánica: misiones e insignias)
+- **Aplicación publicada:**
 
 ## Ejecutar en su equipo
 
@@ -44,4 +44,4 @@ ruff check .
 
 ## Licencia
 
-MIT. Consulte el archivo LICENSE.
+MIT. Consulte el archivo [LICENSE](/LICENSE)
