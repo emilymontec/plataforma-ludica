@@ -4,7 +4,9 @@ Contexto del proyecto para los agentes de IA. Léalo antes de cualquier cambio.
 
 ## Proyecto
 
-Plataforma web lúdica de cursos para niños. Curso: (complete). Mecánica: (complete).
+Plataforma web lúdica de cursos para niños.
+Curso: Geografía de Colombia.
+Mecánica: Misiones e Insignias.
 Roles: docente y niño. El niño entra con código de clase y avatar, sin correo.
 
 ## Stack
