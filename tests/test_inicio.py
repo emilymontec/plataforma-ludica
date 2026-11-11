@@ -28,6 +28,12 @@ def test_api_devuelve_los_datos_del_proyecto():
     assert respuesta.json()["aprendiz"] == proyecto.APRENDIZ
 
 
+def test_api_devuelve_la_version_del_proyecto():
+    respuesta = cliente.get("/api/version")
+    assert respuesta.status_code == 200
+    assert respuesta.json() == {"version": proyecto.VERSION}
+
+
 def test_documentacion_disponible():
     assert cliente.get("/docs").status_code == 200
 
