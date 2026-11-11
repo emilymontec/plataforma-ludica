@@ -22,7 +22,7 @@ class DatosProyecto(BaseModel):
 @router.get("/salud", response_model=Salud, tags=["Sistema"])
 def salud():
     """Indica si la aplicación está en funcionamiento."""
-    return Salud(estado="ok")
+    return Salud(estado="en funcionamiento")
 
 
 @router.get("/api/proyecto", response_model=DatosProyecto, tags=["Proyecto"])
