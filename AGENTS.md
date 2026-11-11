@@ -35,6 +35,7 @@ Roles: docente y niño. El niño entra con código de clase y avatar, sin correo
 
 - Nombres en español, claros y completos.
 - Cambios pequeños, una tarea por rama y prueba antes del código.
+- Al iniciar cada sesión, leer STATE.md.
 
 ## Qué no hacer
 
@@ -42,6 +43,7 @@ Roles: docente y niño. El niño entra con código de clase y avatar, sin correo
 - No instalar dependencias sin verificar que existen en pypi.org.
 - No modificar ni borrar pruebas para que pasen.
 - No usar datos personales reales.
+- No hacer commit ni push: los hace el desarrollador.
 
 ## Lecciones aprendidas
 
