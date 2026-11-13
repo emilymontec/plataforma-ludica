@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi Lista de Tareas</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <div class="app-heading">
+        <p class="eyebrow">FastAPI</p>
+        <h1>Mi lista de tareas</h1>
+        <p class="subtitle">Organiza tu día, una tarea a la vez.</p>
+      </div>
+      <div class="progress-ring" id="progress-ring" aria-label="Progreso de las tareas">
+        <div class="progress-ring-inner">
+          <span id="progress-text">0%</span>
+        </div>
+      </div>
+    </header>
+
+    <form id="task-form" class="task-form" autocomplete="off">
+      <div class="task-form-fields">
+        <input id="task-title" type="text" maxlength="200" placeholder="¿Qué necesitas hacer?" required aria-label="Título de la tarea">
+        <textarea id="task-description" maxlength="1000" rows="1" placeholder="Descripción (opcional)" aria-label="Descripción de la tarea"></textarea>
+      </div>
+      <button type="submit" class="primary-button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Añadir
+      </button>
+    </form>
+
+    <section class="toolbar">
+      <div class="filters" role="group" aria-label="Filtrar tareas">
+        <button type="button" data-filter="all" class="filter is-active">Todas <span id="count-all">0</span></button>
+        <button type="button" data-filter="pending" class="filter">Pendientes <span id="count-pending">0</span></button>
+        <button type="button" data-filter="completed" class="filter">Completadas <span id="count-completed">0</span></button>
+      </div>
+      <button type="button" id="clear-completed" class="ghost-button">Limpiar completadas</button>
+    </section>
+
+    <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+
+    <ul id="task-list" class="task-list" aria-live="polite"></ul>
+    <p id="empty-state" class="empty-state" hidden>No hay tareas por aquí.</p>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <template id="task-template">
+    <li class="task">
+      <button type="button" class="check" aria-label="Marcar como completada">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
+      </button>
+      <div class="task-body">
+        <div class="task-view">
+          <h2 class="task-title"></h2>
+          <p class="task-description"></p>
+          <p class="task-meta"></p>
+        </div>
+        <form class="task-edit" hidden>
+          <input type="text" class="edit-title" maxlength="200" aria-label="Editar título">
+          <textarea class="edit-description" maxlength="1000" rows="2" aria-label="Editar descripción"></textarea>
+          <div class="edit-actions">
+            <button type="submit" class="primary-button small">Guardar</button>
+            <button type="button" class="ghost-button cancel-edit">Cancelar</button>
+          </div>
+        </form>
+      </div>
+      <div class="task-actions">
+        <button type="button" class="icon-button edit-task" aria-label="Editar tarea">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4l10-10a2.8 2.8 0 0 0-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>
+        </button>
+        <button type="button" class="icon-button danger delete-task" aria-label="Eliminar tarea">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13"/></svg>
+        </button>
+      </div>
+    </li>
+  </template>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
