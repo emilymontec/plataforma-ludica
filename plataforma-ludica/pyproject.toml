@@ -1,0 +1,16 @@
+[project]
+name = "plataforma-ludica"
+version = "0.1.0"
+description = "Plataforma web lúdica de cursos para niños"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I"]
