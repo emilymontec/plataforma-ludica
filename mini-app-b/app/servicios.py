@@ -4,9 +4,14 @@ _tareas: list[dict] = []
 _siguiente_id = 1
 
 
-def listar_tareas() -> list[dict]:
-    """Devuelve una copia de todas las tareas."""
-    return [dict(tarea) for tarea in _tareas]
+def listar_tareas(estado: str | None = None) -> list[dict]:
+    """Devuelve las tareas, opcionalmente filtradas por estado."""
+    tareas = _tareas
+    if estado == "pendientes":
+        tareas = [tarea for tarea in _tareas if not tarea["completada"]]
+    elif estado == "completadas":
+        tareas = [tarea for tarea in _tareas if tarea["completada"]]
+    return [dict(tarea) for tarea in tareas]
 
 
 def crear_tarea(titulo: str) -> dict:

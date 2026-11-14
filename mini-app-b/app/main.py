@@ -1,6 +1,7 @@
 """Aplicación web de la lista de tareas."""
 
 from pathlib import Path
+from typing import Literal
 
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.responses import HTMLResponse
@@ -16,6 +17,8 @@ app = FastAPI(title="Lista de tareas")
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
 
+EstadoFiltro = Literal["pendientes", "completadas"]
+
 
 class TareaEntrada(BaseModel):
     """Datos para crear una tarea."""
@@ -24,12 +27,15 @@ class TareaEntrada(BaseModel):
 
 
 @app.get("/", response_class=HTMLResponse)
-def pagina_principal(request: Request):
+def pagina_principal(request: Request, estado: EstadoFiltro | None = None):
     """Muestra la lista de tareas y el formulario de alta."""
     return templates.TemplateResponse(
         request=request,
         name="index.html",
-        context={"tareas": servicios.listar_tareas()},
+        context={
+            "tareas": servicios.listar_tareas(estado),
+            "estado": estado,
+        },
     )
 
 
@@ -40,9 +46,9 @@ def crear_tarea(datos: TareaEntrada) -> dict:
 
 
 @app.get("/api/tareas")
-def listar_tareas() -> list[dict]:
-    """Devuelve todas las tareas."""
-    return servicios.listar_tareas()
+def listar_tareas(estado: EstadoFiltro | None = None) -> list[dict]:
+    """Devuelve todas las tareas o las filtradas por estado."""
+    return servicios.listar_tareas(estado)
 
 
 @app.put("/api/tareas/{tarea_id}/completar")

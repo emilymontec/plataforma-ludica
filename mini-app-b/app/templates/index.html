@@ -4,62 +4,439 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lista de tareas</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+    <style>
+      :root {
+        color-scheme: light;
+        --fondo: #f7f7f5;
+        --superficie: #ffffff;
+        --texto: #1c1c1a;
+        --texto-suave: #666660;
+        --texto-tenue: #8a8a84;
+        --borde: #e8e8e3;
+        --borde-fuerte: #dcdcd5;
+        --exito: #2f7d4a;
+        --peligro: #b42318;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--fondo);
+        color: var(--texto);
+        font-family:
+          "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .app {
+        width: min(720px, calc(100% - 2.5rem));
+        margin: 0 auto;
+        padding: 4.5rem 0 3rem;
+      }
+
+      .encabezado {
+        margin-bottom: 2.5rem;
+      }
+
+      .eyebrow {
+        margin: 0 0 0.75rem;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--texto-tenue);
+      }
+
+      h1 {
+        margin: 0 0 0.75rem;
+        font-size: clamp(2rem, 5vw, 2.75rem);
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+      }
+
+      .descripcion {
+        max-width: 46ch;
+        margin: 0;
+        color: var(--texto-suave);
+      }
+
+      .panel {
+        padding: 1.5rem;
+        background: var(--superficie);
+        border: 1px solid var(--borde);
+        border-radius: 20px;
+        box-shadow: 0 1px 2px rgb(0 0 0 / 3%);
+      }
+
+      form label {
+        display: block;
+        margin-bottom: 0.6rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #3d3d38;
+      }
+
+      .campo {
+        display: flex;
+        gap: 0.6rem;
+      }
+
+      input[type="text"] {
+        flex: 1;
+        min-width: 0;
+        padding: 0.85rem 1rem;
+        background: #fafaf8;
+        border: 1px solid var(--borde-fuerte);
+        border-radius: 12px;
+        color: inherit;
+        font: inherit;
+        transition:
+          border-color 0.15s ease,
+          box-shadow 0.15s ease,
+          background 0.15s ease;
+      }
+
+      input[type="text"]::placeholder {
+        color: #a3a39c;
+      }
+
+      input[type="text"]:focus {
+        outline: none;
+        background: var(--superficie);
+        border-color: var(--texto);
+        box-shadow: 0 0 0 3px rgb(28 28 26 / 8%);
+      }
+
+      button {
+        font: inherit;
+        cursor: pointer;
+      }
+
+      button[type="submit"] {
+        padding: 0.85rem 1.25rem;
+        background: var(--texto);
+        border: 1px solid var(--texto);
+        border-radius: 12px;
+        color: #ffffff;
+        font-weight: 600;
+        transition: background 0.15s ease;
+      }
+
+      button[type="submit"]:hover {
+        background: #33332f;
+      }
+
+      .error {
+        margin: 0.75rem 0 0;
+        color: var(--peligro);
+        font-size: 0.87rem;
+      }
+
+      .tareas {
+        margin-top: 2.5rem;
+      }
+
+      .barra {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--texto-tenue);
+      }
+
+      .filtros {
+        display: inline-flex;
+        gap: 0.25rem;
+        padding: 0.25rem;
+        background: #efefeb;
+        border-radius: 999px;
+      }
+
+      .filtro {
+        padding: 0.45rem 0.9rem;
+        border-radius: 999px;
+        color: var(--texto-suave);
+        font-size: 0.82rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .filtro:hover {
+        color: var(--texto);
+      }
+
+      .filtro.activo {
+        background: var(--superficie);
+        color: var(--texto);
+        box-shadow: 0 1px 2px rgb(0 0 0 / 8%);
+      }
+
+      .filtro:focus-visible {
+        outline: 2px solid var(--texto);
+        outline-offset: 2px;
+      }
+
+      .lista {
+        display: grid;
+        gap: 0.6rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .tarea {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem 1.1rem;
+        background: var(--superficie);
+        border: 1px solid var(--borde);
+        border-radius: 14px;
+        transition: border-color 0.15s ease;
+      }
+
+      .tarea:hover {
+        border-color: var(--borde-fuerte);
+      }
+
+      .info {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        min-width: 0;
+      }
+
+      .marca {
+        flex-shrink: 0;
+        width: 9px;
+        height: 9px;
+        background: #c9c9c2;
+        border-radius: 50%;
+      }
+
+      .tarea.completada .marca {
+        background: var(--exito);
+      }
+
+      .titulo {
+        overflow-wrap: anywhere;
+      }
+
+      .tarea.completada .titulo {
+        color: var(--texto-tenue);
+        text-decoration: line-through;
+        text-decoration-color: #c9c9c2;
+      }
+
+      .derecha {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .estado {
+        color: var(--texto-tenue);
+        font-size: 0.75rem;
+      }
+
+      .acciones {
+        display: flex;
+        gap: 0.4rem;
+      }
+
+      .acciones button {
+        padding: 0.45rem 0.75rem;
+        background: transparent;
+        border: 1px solid var(--borde-fuerte);
+        border-radius: 8px;
+        color: var(--texto-suave);
+        font-size: 0.78rem;
+        transition:
+          border-color 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .acciones .completar:hover {
+        border-color: var(--exito);
+        color: var(--exito);
+      }
+
+      .acciones .eliminar:hover {
+        border-color: var(--peligro);
+        color: var(--peligro);
+      }
+
+      .vacia {
+        padding: 2rem 1rem;
+        border: 1px dashed var(--borde-fuerte);
+        border-radius: 14px;
+        color: var(--texto-tenue);
+        font-size: 0.9rem;
+        text-align: center;
+      }
+
+      .pie {
+        margin-top: 2.5rem;
+        color: #a3a39c;
+        font-size: 0.75rem;
+        text-align: center;
+      }
+
+      @media (max-width: 600px) {
+        .app {
+          padding-top: 2.5rem;
+        }
+
+        .campo {
+          flex-direction: column;
+        }
+
+        button[type="submit"] {
+          width: 100%;
+        }
+
+        .barra {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .tarea {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .derecha {
+          justify-content: space-between;
+          width: 100%;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
   </head>
   <body>
-    <main class="contenedor">
-      <h1>Lista de tareas</h1>
+    <main class="app">
+      <header class="encabezado">
+        <p class="eyebrow">Lista de tareas</p>
+        <h1>Organiza tu día</h1>
+        <p class="descripcion">
+          Añade tareas, márcalas como completadas y mantén el foco en lo
+          importante.
+        </p>
+      </header>
 
-      <form id="form-tarea" novalidate>
-        <label for="titulo">Nueva tarea</label>
-        <div class="fila">
-          <input
-            id="titulo"
-            name="titulo"
-            type="text"
-            maxlength="100"
-            placeholder="Estudiar FastAPI"
-            autocomplete="off"
-            required
-          >
-          <button type="submit">Agregar</button>
+      <section class="panel" aria-label="Nueva tarea">
+        <form id="form-tarea" novalidate>
+          <label for="titulo">Nueva tarea</label>
+          <div class="campo">
+            <input
+              id="titulo"
+              name="titulo"
+              type="text"
+              maxlength="100"
+              placeholder="¿Qué necesitas hacer?"
+              autocomplete="off"
+              required
+            >
+            <button type="submit">Añadir</button>
+          </div>
+          <p id="error" class="error" role="alert" hidden></p>
+        </form>
+      </section>
+
+      <section class="tareas" aria-label="Tareas">
+        <div class="barra">
+          <h2>Tareas</h2>
+          <nav class="filtros" aria-label="Filtrar tareas por estado">
+            <a
+              class="filtro{% if estado is none %} activo{% endif %}"
+              href="/"
+              {% if estado is none %}aria-current="page"{% endif %}
+            >Todas</a>
+            <a
+              class="filtro{% if estado == 'pendientes' %} activo{% endif %}"
+              href="/?estado=pendientes"
+              {% if estado == 'pendientes' %}aria-current="page"{% endif %}
+            >Pendientes</a>
+            <a
+              class="filtro{% if estado == 'completadas' %} activo{% endif %}"
+              href="/?estado=completadas"
+              {% if estado == 'completadas' %}aria-current="page"{% endif %}
+            >Completadas</a>
+          </nav>
         </div>
-        <p id="error" class="error" role="alert" hidden></p>
-      </form>
 
-      <section>
-        <h2>Tareas</h2>
-        <ul id="lista-tareas">
+        <ul id="lista-tareas" class="lista">
           {% for tarea in tareas %}
             <li class="tarea{% if tarea.completada %} completada{% endif %}">
-              <span class="titulo">{{ tarea.titulo }}</span>
-              <span class="estado">
-                {{ "Completada" if tarea.completada else "Pendiente" }}
-              </span>
-              <div class="acciones">
-                {% if not tarea.completada %}
+              <div class="info">
+                <span class="marca" aria-hidden="true"></span>
+                <span class="titulo">{{ tarea.titulo }}</span>
+              </div>
+              <div class="derecha">
+                <span class="estado">
+                  {{ "Completada" if tarea.completada else "Pendiente" }}
+                </span>
+                <div class="acciones">
+                  {% if not tarea.completada %}
+                    <button
+                      type="button"
+                      class="completar"
+                      data-id="{{ tarea.id }}"
+                    >
+                      Completar
+                    </button>
+                  {% endif %}
                   <button
                     type="button"
-                    class="completar"
+                    class="eliminar"
                     data-id="{{ tarea.id }}"
                   >
-                    Completar
+                    Eliminar
                   </button>
-                {% endif %}
-                <button
-                  type="button"
-                  class="eliminar"
-                  data-id="{{ tarea.id }}"
-                >
-                  Eliminar
-                </button>
+                </div>
               </div>
             </li>
           {% else %}
-            <li class="vacia">No hay tareas todavía.</li>
+            <li class="vacia">
+              {% if estado == "pendientes" %}
+                No hay tareas pendientes.
+              {% elif estado == "completadas" %}
+                Todavía no has completado ninguna tarea.
+              {% else %}
+                No hay tareas todavía. Añade la primera arriba.
+              {% endif %}
+            </li>
           {% endfor %}
         </ul>
       </section>
+
+      <p class="pie">Hecho con FastAPI, Jinja2 y CSS puro.</p>
     </main>
 
     <script src="{{ url_for('static', path='app.js') }}"></script>
