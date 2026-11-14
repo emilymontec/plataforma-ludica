@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista de tareas</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+  </head>
+  <body>
+    <main class="contenedor">
+      <h1>Lista de tareas</h1>
+
+      <form id="form-tarea" novalidate>
+        <label for="titulo">Nueva tarea</label>
+        <div class="fila">
+          <input
+            id="titulo"
+            name="titulo"
+            type="text"
+            maxlength="100"
+            placeholder="Estudiar FastAPI"
+            autocomplete="off"
+            required
+          >
+          <button type="submit">Agregar</button>
+        </div>
+        <p id="error" class="error" role="alert" hidden></p>
+      </form>
+
+      <section>
+        <h2>Tareas</h2>
+        <ul id="lista-tareas">
+          {% for tarea in tareas %}
+            <li class="tarea{% if tarea.completada %} completada{% endif %}">
+              <span class="titulo">{{ tarea.titulo }}</span>
+              <span class="estado">
+                {{ "Completada" if tarea.completada else "Pendiente" }}
+              </span>
+              <div class="acciones">
+                {% if not tarea.completada %}
+                  <button
+                    type="button"
+                    class="completar"
+                    data-id="{{ tarea.id }}"
+                  >
+                    Completar
+                  </button>
+                {% endif %}
+                <button
+                  type="button"
+                  class="eliminar"
+                  data-id="{{ tarea.id }}"
+                >
+                  Eliminar
+                </button>
+              </div>
+            </li>
+          {% else %}
+            <li class="vacia">No hay tareas todavía.</li>
+          {% endfor %}
+        </ul>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', path='app.js') }}"></script>
+  </body>
+</html>

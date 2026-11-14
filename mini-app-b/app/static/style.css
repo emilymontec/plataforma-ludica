@@ -1,0 +1,176 @@
+:root {
+  --fondo: #f4f6fb;
+  --superficie: #ffffff;
+  --texto: #1f2937;
+  --suave: #6b7280;
+  --borde: #d7dce5;
+  --acento: #2563eb;
+  --acento-oscuro: #1d4ed8;
+  --peligro: #dc2626;
+  --exito: #15803d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(160deg, var(--fondo), #e8edf8);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.contenedor {
+  width: min(680px, calc(100% - 2rem));
+  margin: 3rem auto;
+  padding: 2rem;
+  background: var(--superficie);
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgb(31 41 55 / 12%);
+}
+
+h1 {
+  margin: 0 0 1.5rem;
+  font-size: 1.8rem;
+}
+
+h2 {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  color: var(--suave);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.fila {
+  display: flex;
+  gap: 0.75rem;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  font: inherit;
+}
+
+input[type="text"]:focus {
+  outline: 2px solid var(--acento);
+  outline-offset: 1px;
+}
+
+button {
+  padding: 0.75rem 1.1rem;
+  border: 0;
+  border-radius: 10px;
+  background: var(--acento);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+button:hover {
+  background: var(--acento-oscuro);
+}
+
+.error {
+  margin: 0.6rem 0 0;
+  color: var(--peligro);
+  font-size: 0.9rem;
+}
+
+#lista-tareas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.tarea {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  background: #fafbff;
+}
+
+.tarea .titulo {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.tarea .estado {
+  justify-self: end;
+  color: var(--suave);
+  font-size: 0.85rem;
+}
+
+.tarea.completada .titulo {
+  color: var(--suave);
+  text-decoration: line-through;
+}
+
+.tarea.completada .estado {
+  color: var(--exito);
+  font-weight: 600;
+}
+
+.acciones {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.acciones .eliminar {
+  background: transparent;
+  border: 1px solid var(--peligro);
+  color: var(--peligro);
+}
+
+.acciones .eliminar:hover {
+  background: var(--peligro);
+  color: #ffffff;
+}
+
+.vacia {
+  padding: 1.25rem;
+  border: 1px dashed var(--borde);
+  border-radius: 12px;
+  color: var(--suave);
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .contenedor {
+    margin: 1rem auto;
+    padding: 1.25rem;
+  }
+
+  .fila {
+    flex-direction: column;
+  }
+
+  .tarea {
+    grid-template-columns: 1fr;
+  }
+
+  .tarea .estado {
+    justify-self: start;
+  }
+}
